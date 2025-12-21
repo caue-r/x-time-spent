@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "X Time Spent",
+  "description": "Conta quanto tempo você passa no X.com em dias, horas, minutos e segundos.",
+  "version": "1.0.0",
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://x.com/*",
+    "https://www.x.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Tempo no X",
+    "default_popup": "popup.html"
+  }
+}
