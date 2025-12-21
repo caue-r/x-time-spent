@@ -2,6 +2,7 @@ const timerEl = document.getElementById("timer");
 const stateEl = document.getElementById("state");
 const resetBtn = document.getElementById("reset");
 const themeToggleBtn = document.getElementById("theme-toggle");
+const popupPort = chrome.runtime.connect({ name: "popup" });
 
 const formatTime = (ms) => {
   const totalSeconds = Math.floor(ms / 1000);

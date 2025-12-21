@@ -1,5 +1,6 @@
 const STORAGE_KEY = "xTimeState";
 const X_HOSTS = ["x.com", "www.x.com"];
+let uiOpen = false;
 
 let state = {
   totalMs: 0,
@@ -57,6 +58,7 @@ const getActiveTab = async () => {
   const [tab] = await chrome.tabs.query({
     active: true,
     lastFocusedWindow: true,
+    windowType: "normal",
   });
   return tab;
 };
@@ -70,14 +72,17 @@ const getWindow = async (windowId) => {
 };
 
 const handleContextChange = async (reason) => {
-  const tab = await getActiveTab();
+  let tab = await getActiveTab();
+  if (!tab && uiOpen && state.tabId !== null) {
+    tab = await safeGetTab(state.tabId);
+  }
   if (!tab) {
     await stopTimer(reason);
     return;
   }
 
   const win = await getWindow(tab.windowId);
-  const focused = Boolean(win?.focused);
+  const focused = Boolean(win?.focused) || uiOpen;
   const shouldTrack = focused && tab.active && isXUrl(tab.url);
 
   if (shouldTrack) {
@@ -149,6 +154,16 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
   respond();
   return true;
+});
+
+chrome.runtime.onConnect.addListener((port) => {
+  if (port.name !== "popup") return;
+  uiOpen = true;
+  handleContextChange("popup-opened");
+  port.onDisconnect.addListener(() => {
+    uiOpen = false;
+    handleContextChange("popup-closed");
+  });
 });
 
 restoreTracking();
