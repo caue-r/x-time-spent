@@ -1,13 +1,18 @@
 {
   "manifest_version": 3,
   "name": "X Time Spent",
-  "description": "Conta quanto tempo você passa no X.com em dias, horas, minutos e segundos.",
+  "description": "See how much time you spend on X.com",
   "version": "1.0.0",
   "permissions": [
     "storage",
     "tabs",
     "activeTab"
   ],
+  "icons": {
+    "16": "logo.png",
+    "32": "logo.png",
+    "128": "logo.png"
+  },
   "host_permissions": [
     "https://x.com/*",
     "https://www.x.com/*"
@@ -16,7 +21,10 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "Tempo no X",
+    "default_icon": {
+      "16": "logo.png",
+      "32": "logo.png"
+    },
     "default_popup": "popup.html"
   }
 }
