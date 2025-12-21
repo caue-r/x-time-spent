@@ -1,6 +1,7 @@
 const timerEl = document.getElementById("timer");
 const stateEl = document.getElementById("state");
 const resetBtn = document.getElementById("reset");
+const themeToggleBtn = document.getElementById("theme-toggle");
 
 const formatTime = (ms) => {
   const totalSeconds = Math.floor(ms / 1000);
@@ -14,8 +15,8 @@ const formatTime = (ms) => {
 const setTimer = (ms, running) => {
   timerEl.textContent = formatTime(ms);
   stateEl.textContent = running
-    ? "Contando enquanto o X.com está em foco."
-    : "Pausado: abra o X.com na aba ativa.";
+    ? "Tracking while X.com is in focus."
+    : "Paused: open X.com in the active tab.";
 };
 
 const fetchStatus = () =>
@@ -40,5 +41,26 @@ resetBtn.addEventListener("click", () => {
   });
 });
 
+const applyTheme = (theme) => {
+  if (theme === "light") {
+    document.body.classList.add("light");
+  } else {
+    document.body.classList.remove("light");
+  }
+};
+
+themeToggleBtn.addEventListener("click", () => {
+  const currentTheme = localStorage.getItem("theme");
+  const newTheme = currentTheme === "light" ? "dark" : "light";
+  localStorage.setItem("theme", newTheme);
+  applyTheme(newTheme);
+});
+
+const loadTheme = () => {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  applyTheme(savedTheme);
+};
+
+loadTheme();
 refresh();
 setInterval(refresh, 1000);

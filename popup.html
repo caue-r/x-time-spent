@@ -1,23 +1,24 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Tempo no X</title>
+    <title>Time on X</title>
     <link rel="stylesheet" href="popup.css" />
+    <link rel="stylesheet" href="light.css" />
   </head>
   <body>
     <div class="container">
       <header>
-        <div class="title">Tempo no X.com</div>
-        <div class="hint">Cronômetro dias · horas · minutos · segundos</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.png" alt="" />
+        <div class="actions">
+          <button id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀</button>
+          <button id="reset" aria-label="Reset timer" title="Reset timer">↺</button>
+        </div>
       </header>
       <main>
         <div class="timer" id="timer">0d 0h 0m 0s</div>
-        <div class="state" id="state">Aguardando abas do X.</div>
+        <div class="state" id="state">Waiting for X tabs.</div>
       </main>
-      <footer>
-        <button id="reset">Zerar</button>
-      </footer>
     </div>
     <script src="popup.js"></script>
   </body>

@@ -1,0 +1,30 @@
+body.light {
+  background-color: #f8fafc;
+  color: #0d0d0d;
+}
+
+body.light .container {
+  background-color: #fff;
+  border-color: #e5e5e5;
+}
+
+body.light header img {
+  filter: invert(1);
+}
+
+body.light .timer {
+  color: #0d0d0d;
+}
+
+body.light .state {
+  background: #f0f0f0;
+  color: #525252;
+}
+
+body.light button {
+  color: #525252;
+}
+
+body.light button:hover {
+  color: #0d0d0d;
+}
