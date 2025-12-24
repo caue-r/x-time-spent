@@ -8,7 +8,7 @@ body {
   font-family: system-ui, -apple-system, sans-serif;
   color: #f8fafc;
   background-color: #1a1a1a;
-  width: 320px;
+  width: 360px;
 }
 
 .container {
@@ -42,6 +42,7 @@ header img {
   font-size: 36px;
   text-align: center;
   color: #fff;
+  white-space: nowrap;
 }
 
 .state {
