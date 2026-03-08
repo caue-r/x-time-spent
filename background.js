@@ -7,6 +7,8 @@ let state = {
   running: false,
   lastStart: null,
   tabId: null,
+  installedAt: null,
+  lastResetAt: null,
 };
 
 const now = () => Date.now();
@@ -24,6 +26,10 @@ const loadState = async () => {
   const stored = await chrome.storage.local.get(STORAGE_KEY);
   if (stored[STORAGE_KEY]) {
     state = { ...state, ...stored[STORAGE_KEY] };
+  }
+  if (!state.installedAt) {
+    state.installedAt = now();
+    await persistState();
   }
 };
 
@@ -137,12 +143,15 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         totalMs: state.totalMs + runningElapsed,
         running: state.running,
         lastStart: state.lastStart,
+        lastResetAt: state.lastResetAt,
+        installedAt: state.installedAt,
       });
       return;
     }
 
     if (request.type === "reset") {
       state.totalMs = 0;
+      state.lastResetAt = now();
       if (state.running) {
         state.lastStart = now();
       }
@@ -163,6 +172,15 @@ chrome.runtime.onConnect.addListener((port) => {
   port.onDisconnect.addListener(() => {
     uiOpen = false;
     handleContextChange("popup-closed");
+  });
+});
+
+chrome.runtime.onInstalled.addListener(async () => {
+  const stored = await chrome.storage.local.get(STORAGE_KEY);
+  const savedState = stored[STORAGE_KEY] || {};
+  if (savedState.installedAt) return;
+  await chrome.storage.local.set({
+    [STORAGE_KEY]: { ...state, ...savedState, installedAt: now() },
   });
 });
 

@@ -21,6 +21,12 @@ body.light .state {
   color: #525252;
 }
 
+body.light .date-info {
+  background: #f8f8f8;
+  border-color: #e5e5e5;
+  color: #525252;
+}
+
 body.light button {
   color: #525252;
 }

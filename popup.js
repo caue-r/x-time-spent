@@ -1,5 +1,5 @@
 const timerEl = document.getElementById("timer");
-const stateEl = document.getElementById("state");
+const dateInfoEl = document.getElementById("date-info");
 const resetBtn = document.getElementById("reset");
 const themeToggleBtn = document.getElementById("theme-toggle");
 const popupPort = chrome.runtime.connect({ name: "popup" });
@@ -13,18 +13,36 @@ const formatTime = (ms) => {
   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 };
 
-const setTimer = (ms, running) => {
+const setTimer = (ms) => {
   timerEl.textContent = formatTime(ms);
-  stateEl.textContent = running
-    ? "Tracking while X.com is in focus."
-    : "Paused: open X.com in the active tab.";
+};
+
+const formatDateTime = (timestamp) => {
+  if (!timestamp) return "Data indisponivel";
+  return new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(timestamp));
+};
+
+const setDateInfo = (lastResetAt, installedAt) => {
+  if (lastResetAt) {
+    dateInfoEl.textContent = `Last reset: ${formatDateTime(lastResetAt)}`;
+    return;
+  }
+  dateInfoEl.textContent = `Instalada em: ${formatDateTime(installedAt)}`;
 };
 
 const fetchStatus = () =>
   new Promise((resolve) => {
     chrome.runtime.sendMessage({ type: "getStatus" }, (response) => {
       if (chrome.runtime.lastError || !response) {
-        resolve({ totalMs: 0, running: false });
+        resolve({
+          totalMs: 0,
+          running: false,
+          lastResetAt: null,
+          installedAt: null,
+        });
         return;
       }
       resolve(response);
@@ -32,8 +50,9 @@ const fetchStatus = () =>
   });
 
 const refresh = async () => {
-  const { totalMs, running } = await fetchStatus();
-  setTimer(totalMs, running);
+  const { totalMs, lastResetAt, installedAt } = await fetchStatus();
+  setTimer(totalMs);
+  setDateInfo(lastResetAt, installedAt);
 };
 
 resetBtn.addEventListener("click", () => {

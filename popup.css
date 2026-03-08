@@ -54,6 +54,16 @@ header img {
   padding: 8px 10px;
 }
 
+.date-info {
+  font-size: 12px;
+  color: #a1a1a1;
+  text-align: center;
+  background: #202020;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
 button {
   border: none;
   background: transparent;
